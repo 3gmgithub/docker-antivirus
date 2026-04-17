@@ -1,5 +1,5 @@
 FROM debian:trixie-slim
-MAINTAINER Dietrich Rordorf <dr@ediqo.com>
+AUTHOR Dietrich Rordorf <dr@ediqo.com>
 
 USER root
 
