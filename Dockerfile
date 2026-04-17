@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:trixie-slim
 MAINTAINER Dietrich Rordorf <dr@ediqo.com>
 
 USER root
