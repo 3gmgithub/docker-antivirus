@@ -1,9 +1,7 @@
-version: '2'
-
 services:
 
   docker-av:
-    image: rordi/docker-antivirus
+    image: xtekllc/docker-antivirus
     container_name: docker-av
     # uncomment and set the email address to receive email alerts when viruses are detected
     #command:

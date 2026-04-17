@@ -1,10 +1,10 @@
-# rordi/docker-antivirus
+# 3gmgithub/docker-antivirus forked from rordi/docker-antivirus
 
-## Antivirus & Antimalware as a Microservice / as a Docker Container
+## Antivirus & Antimalware as a Microservice / as a Docker Container (Updated to Trixie)
 
 [![](https://images.microbadger.com/badges/image/rordi/docker-antivirus.svg)](https://microbadger.com/images/rordi/docker-antivirus "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/rordi/docker-antivirus.svg)](https://microbadger.com/images/rordi/docker-antivirus "Get your own version badge on microbadger.com")
 
-rordi/docker-antivirus is a virus and malware scanner as a Docker microservice. You can read an introduction here: https://www.linkedin.com/pulse/virus-malware-scanning-service-docker-dietrich-rordorf
+3gmgithub/docker-antivirus is a virus and malware scanner as a Docker microservice. You can read an introduction here: https://www.linkedin.com/pulse/virus-malware-scanning-service-docker-dietrich-rordorf
 
 The resulting Docker image runs inotify as the main process that watches a pre-defined volume for file write events and calls clamscan for each new file that is written into the volume. We do *not* use the ClamAV daemon, which has a constant, large memory consumption. 
 
@@ -26,14 +26,14 @@ The resulting Docker image runs inotify as the main process that watches a pre-d
 
 ### Quick start
 
-If you simply want to try out the setup, copy the docker-compose.yml file from the [repository](https://github.com/rordi/docker-antivirus) to your local file system and run:
+If you simply want to try out the setup, copy the compose.yml file from the [repository](https://github.com/3gmgithub/docker-antivirus) to your local file system and run:
 
-    docker-compose up -d
+    docker compose up -d
 
 
 ### Introduction
 
-Build for [rordi/docker-antivirus](https://hub.docker.com/r/rordi/docker-antivirus/) Docker image running [Linux Malware Detect (LMD)](https://github.com/rfxn/linux-malware-detect) with [ClamAV](https://github.com/vrtadmin/clamav-devel) as the scanner.
+Build for [3gmgithub/docker-antivirus](https://hub.docker.com/r/3gmgithub/docker-antivirus/) Docker image running [Linux Malware Detect (LMD)](https://github.com/rfxn/linux-malware-detect) with [ClamAV](https://github.com/vrtadmin/clamav-devel) as the scanner.
 
 rordi/docker-antivirus provides a plug-in container to e.g. scan file uploads in web applications before further processing.
 
@@ -63,11 +63,11 @@ Additionally, you may mount the quarantine folder and provide it to the antiviru
 To install the container, pull it from the Docker registry (latest tag refers to
 the master branch, use dev tag for dev branch):
 
-    docker pull rordi/docker-antivirus:latest
+    docker pull 3gmgithub/docker-antivirus:latest
 
 To run the docker container, use the following command. If you pass an email address as the last argument, email alerts will be activated and sent to this email address whenever a virus is detected.
 
-    docker run -tid --name docker-antivirus rordi/docker-antivirus [email@example.net]
+    docker run -tid --name docker-antivirus 3gmgithub/docker-antivirus [email@example.net]
 
 
 ### Docker Build & Run
@@ -90,16 +90,23 @@ You can use the [EICAR test file](https://en.wikipedia.org/wiki/EICAR_test_file)
 
 Here is an exmple entry that you can use in your docker-compose file to easily plug in the container into your existing network. Replace "networkid" with your actual netwerk id. Optionally turn on email alerts by uncommenting the "command". Finally, make sure the ./data/av/... folders exist on your local/host system or change the paths.
 
+```yaml
+services:
 
-    docker-av:
-      image: rordi/docker-antivirus
-      container_name: docker-av
-      # uncomment and set the email address to receive email alerts when viruses are detected
-      #command:
-      # - /usr/local/install_alerts.sh email@example.net
-      volumes:
-        - ./data/queue:/data/av/queue
-        - ./data/ok:/data/av/ok
-        - ./data/nok:/data/av/nok
-      networks:
-        - yournetworkid
+  docker-av:
+    image: xtekllc/docker-antivirus
+    container_name: docker-av
+    # uncomment and set the email address to receive email alerts when viruses are detected
+    #command:
+    # - /usr/local/install_alerts.sh email@example.net
+    volumes:
+      - ./data/queue:/data/av/queue
+      - ./data/ok:/data/av/ok
+      - ./data/nok:/data/av/nok
+    #  - ./data/quarantine:/data/av/quarantine
+    networks:
+      - avnetwork
+
+networks:
+  avnetwork:
+```
